@@ -1,7 +1,31 @@
 // 23-March-2021
 
+//npm init
+
+//npm install -g nodemon
+//nodemon index.js
+
 var express = require('express')
 var app = express()
+
+
+// template for API Calling...
+//##########################################
+//app.get('Where', 'What to do');
+//app.get('/URl', () => {});
+app.get('/URL', (input, output) => {
+    output.send()
+});
+//=================================================
+app.get('/staticPart/:dynamicPart', (req, res) => {
+
+    // req == reQuest 
+    // res === reSponse
+    res.send()
+
+});
+
+
 
 
 //##########################################
@@ -74,6 +98,32 @@ const listening = () => {
 }
 app.listen(3000, listening)
 
+
+//##########################################
+//##########################################
+//##########################################
+
+// Dynamic API calling from browser URL 
+
+const users = ['taiseen', 'andalib', 'shawon', 'shakib', 'sharin'];
+
+app.get('/users/:id', (req, res) => {
+    //console.log(req.params);
+    //console.log(req.params.id);
+
+    // Get data form users - browser URL parameter  
+    const id = req.params.id;
+    console.log(id);
+    
+    // ?sort=asc
+    console.log(req.query);
+
+    const name = users[id];
+
+    // Send to users - browser Window
+    //res.send(name)
+    res.send({ id, name })
+});
 
 
 
