@@ -1,21 +1,34 @@
 // 23-March-2021
 
-//npm init
+// npm init
+// npm install -g nodemon
+// nodemon index.js
 
-//npm install -g nodemon
-//nodemon index.js
+const express = require('express')
+const app = express()
 
-var express = require('express')
-var app = express()
+
+// npm install cors
+// providing a Connect middleware that can be used to enable
+const cors = require('cors')
+app.use(cors())
+
+// npm install body-parser
+// POST এর body থেকে data গুলা access করার জন্য & 
+// JSON এ convert করেতে পারার জন্য।
+const bodyParser = require('body-parser');
+app.use(bodyParser.json());
 
 
 // template for API Calling...
 //##########################################
-//app.get('Where', 'What to do');
-//app.get('/URl', () => {});
+// app.get('কোথায়?', 'কি করতে হবে?');
+// app.get('Where', 'What to do');
+// app.get('/URl', () => {});
 app.get('/URL', (input, output) => {
     output.send()
 });
+
 //=================================================
 app.get('/staticPart/:dynamicPart', (req, res) => {
 
@@ -33,7 +46,7 @@ app.get('/staticPart/:dynamicPart', (req, res) => {
 //##########################################
 // User API
 const rootCall = (req, res) => {
-    const info = '<h1>Welcome To Node Js</h1>'
+    const info = '<h1>Welcome To Node Js (<u>Server Site</u>)</h1>'
     res.send(info);
 };
 app.get('/', rootCall)
@@ -57,13 +70,14 @@ const userInfo = (req, res) => {
     }
     res.send(info);
     // you will return this object, 
-    // when anyone calls the /user API
+    // when anyone calls the /getUser API
 };
-app.get('/user', userInfo)
 
+//How will you open an api named getUser using express js?
+app.get('/getUser', userInfo)
 
 // user get this info by going to this url
-// http://localhost:3000/user
+// http://localhost:3000/getUser
 
 
 
@@ -114,16 +128,38 @@ app.get('/users/:id', (req, res) => {
     // Get data form users - browser URL parameter  
     const id = req.params.id;
     console.log(id);
-    
-    // ?sort=asc
-    console.log(req.query);
 
-    const name = users[id];
+    // ?sort=asc
+    // console.log(req.query);
+    // console.log(req.query.sort);
+
+    //const name = users[id];
+    const name = users[id - 1];
 
     // Send to users - browser Window
-    //res.send(name)
+    // res.send(name)
     res.send({ id, name })
 });
+
+
+//##########################################
+//##########################################
+//##########################################
+
+// Post API listening from browser URL 
+// Catch User given Data from input field 
+// & invoke Operation upon it... 
+app.post('/addUser', (req, res) => {
+
+    console.log("Data Receive...", req.body);
+
+    // save to DataBase...
+    const user = req.body;
+    user.id = 101;
+    res.send(user);
+
+})
+
 
 
 

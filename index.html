@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <title>Clint Site | Fetch Data</title>
+</head>
+
+<body>
+
+    <div class="container 
+    d-flex 
+    flex-column 
+    justify-content-center 
+    align-items-center ">
+
+        <h2>Welcome to Node Js (Client Site)</h2>
+        <h3>Data GET & POST From Server</h3>
+        <h5>Client Site | Learning</h5>
+
+        <p id='userName'> </p>
+
+
+        <div class="row  
+        d-flex 
+        flex-column 
+        justify-content-center 
+        align-items-center">
+
+            <input type="text" class="center form-control" id="user" placeholder="User Name" style="text-align:center">
+
+            <button class="btn btn-primary mt-2" id="addUser">Add User</button>
+        </div>
+
+
+    </div>
+
+    <script>
+        // Get data from server & display in HTML
+        // শুধু ডাটা সারভার থেকে তুলে নিয়ে এনে প্রদর্শনের জন্য...
+        const userId = 3;
+        const url = `http://localhost:3000/users/${userId}`
+        fetch(url)
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                document.getElementById('userName').innerText = data.name;
+            });
+
+
+        //##########################################
+        //##########################################
+        //##########################################   
+        // POST (send) data to server from HTML
+        // Clint end থেকে Data server এ পাঠানোর জন্য...
+        const btnAddUser = document.getElementById('addUser');
+        const userName = document.getElementById('user');
+
+        btnAddUser.addEventListener('click', () => {
+            const name = userName.value;
+            const user = (!name.length == '') ? { name } : { name: 'Null Not Allow' };
+            //const user = { name } // tricky way to create an object
+            //console.log(user);
+            //Send to Server 
+            const url = `http://localhost:3000/addUser/`;
+
+            fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(user),
+                headers: {
+                    'Content-type': 'application/json; charset=UTF-8',
+                },
+            })
+                .then(res => res.json())
+                .then(data => {updateUser(data), console.log(data)});
+        });
+
+        const updateUser = user => {
+            document.getElementById('userName').innerText = user.name;
+        }
+
+
+
+
+
+    </script>
+</body>
+
+</html>
